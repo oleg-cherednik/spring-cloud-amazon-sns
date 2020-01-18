@@ -1,1 +1,1 @@
-# spring-cloud-amazon-sns
+# spring-cloud-sns

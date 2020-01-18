@@ -1,0 +1,124 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'application'
+    id 'jacoco'
+    id 'io.franzbecker.gradle-lombok' version '1.14'
+    id 'io.codearte.nexus-staging' version '0.11.0'
+    id 'com.gradle.build-scan' version '3.1'
+}
+
+apply plugin: 'com.bmuschko.nexus'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+group 'ru.oleg-cherednik.spring.cloud'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+mainClassName = 'unknown'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+configurations {
+    jar.archiveName = "spring-cloud-sns-${version}.jar"
+}
+
+dependencies {
+    implementation 'org.slf4j:slf4j-api:1.7.30'
+    implementation 'ch.qos.logback:logback-core:1.2.3'
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.2.3.RELEASE'
+    implementation 'com.amazonaws:aws-java-sdk-sns:1.11.705'
+
+    annotationProcessor("org.projectlombok:lombok:1.18.10")
+
+    testImplementation('org.testng:testng:7.1.0') {
+        exclude group: 'org.yaml', module: 'snakeyaml'
+    }
+    testImplementation 'org.assertj:assertj-core:3.14.0'
+    testImplementation 'org.mockito:mockito-core:3.2.4'
+
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.10")
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled true
+    }
+}
+
+check.dependsOn jacocoTestReport
+
+test {
+    useTestNG()
+}
+
+buildScan {
+    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+    termsOfServiceAgree = 'yes'
+}
+
+modifyPom {
+    project {
+        name 'spring-cloud-sns'
+        description 'Amazon SNS Spring Cloud support'
+        url 'https://github.com/oleg-cherednik/spring-cloud-sns'
+        inceptionYear '2020'
+
+        scm {
+            url 'https://github.com/oleg-cherednik/spring-cloud-sns'
+            connection 'scm:https://github.com/oleg-cherednik/spring-cloud-sns.git'
+            developerConnection 'git@github.com:oleg-cherednik/spring-cloud-sns.git'
+        }
+
+        licenses {
+            license {
+                name 'The Apache Software License, Version 2.0'
+                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                distribution 'repo'
+            }
+        }
+
+        developers {
+            developer {
+                id 'oleg.cherednik'
+                name 'Oleg Cherednik'
+                email 'oleg.cherednik@gmail.com'
+            }
+        }
+    }
+}
+
+extraArchive {
+    sources true
+    tests true
+    javadoc true
+}
+
+nexus {
+    sign true
+    repositoryUrl 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
+    snapshotRepositoryUrl 'https://oss.sonatype.org/content/repositories/snapshots'
+}
+
+nexusStaging {
+    packageGroup 'ru.oleg-cherednik'
+    stagingProfileId 'D3835BF60F05B9'
+}
