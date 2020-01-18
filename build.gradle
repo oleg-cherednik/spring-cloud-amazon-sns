@@ -5,6 +5,7 @@ buildscript {
 
     dependencies {
         classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.3'
     }
 }
 
@@ -15,6 +16,7 @@ plugins {
     id 'io.franzbecker.gradle-lombok' version '1.14'
     id 'io.codearte.nexus-staging' version '0.11.0'
     id 'com.gradle.build-scan' version '3.1'
+    id 'com.github.johnrengelman.shadow' version '4.0.3'
 }
 
 apply plugin: 'com.bmuschko.nexus'
@@ -36,18 +38,25 @@ tasks.withType(JavaCompile) {
 }
 
 configurations {
-    jar.archiveName = "spring-cloud-sns-${version}.jar"
+    jar.archiveName = "spring-cloud-aws-sns-${version}.jar"
 }
 
 dependencies {
-    implementation 'org.slf4j:slf4j-api:1.7.30'
-    implementation 'ch.qos.logback:logback-core:1.2.3'
     implementation 'ch.qos.logback:logback-classic:1.2.3'
-    implementation 'org.springframework.boot:spring-boot-starter-web:2.2.3.RELEASE'
-    implementation 'com.amazonaws:aws-java-sdk-sns:1.11.705'
+    implementation('org.springframework.boot:spring-boot-autoconfigure:2.2.3.RELEASE') {
+        exclude group: 'org.springframework', module: 'spring-aop'
+        exclude group: 'org.springframework', module: 'spring-expression'
+    }
+    implementation('org.springframework:spring-webmvc:5.2.3.RELEASE') {
+        exclude group: 'org.springframework', module: 'spring-aop'
+        exclude group: 'org.springframework', module: 'spring-expression'
+    }
+    implementation 'com.amazonaws:aws-java-sdk-sns:1.11.708'
+    implementation 'javax.servlet:javax.servlet-api:4.0.1'
 
     annotationProcessor("org.projectlombok:lombok:1.18.10")
 
+    testImplementation 'org.springframework.boot:spring-boot-starter-web:2.2.3.RELEASE'
     testImplementation('org.testng:testng:7.1.0') {
         exclude group: 'org.yaml', module: 'snakeyaml'
     }
@@ -77,15 +86,15 @@ buildScan {
 
 modifyPom {
     project {
-        name 'spring-cloud-sns'
-        description 'Amazon SNS Spring Cloud support'
-        url 'https://github.com/oleg-cherednik/spring-cloud-sns'
+        name 'spring-cloud-aws-sns'
+        description 'Amazon SNS client for Spring Cloud'
+        url 'https://github.com/oleg-cherednik/spring-cloud-aws-sns'
         inceptionYear '2020'
 
         scm {
             url 'https://github.com/oleg-cherednik/spring-cloud-sns'
-            connection 'scm:https://github.com/oleg-cherednik/spring-cloud-sns.git'
-            developerConnection 'git@github.com:oleg-cherednik/spring-cloud-sns.git'
+            connection 'scm:https://github.com/oleg-cherednik/spring-cloud-aws-sns.git'
+            developerConnection 'git@github.com:oleg-cherednik/spring-cloud-aws-sns.git'
         }
 
         licenses {

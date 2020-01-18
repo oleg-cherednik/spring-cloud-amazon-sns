@@ -18,15 +18,10 @@ import java.util.stream.Collectors;
 @Getter
 @Component
 @ConfigurationProperties("amazon.sns")
-@ConditionalOnProperty(prefix = "amazon.sns", name = "enable", havingValue = "true")
+@ConditionalOnProperty(prefix = "amazon.sns", name = "enabled", havingValue = "true")
 public class AmazonSnsProperties {
 
-    private boolean enable;
     private Map<String, AmazonSnsTopic> topicById = Collections.emptyMap();
-
-    public void setEnable(boolean enable) {
-        this.enable = enable;
-    }
 
     public void setTopics(Map<String, Topic> topics) {
         Map<String, AmazonSnsTopic> map = topics.entrySet().stream()

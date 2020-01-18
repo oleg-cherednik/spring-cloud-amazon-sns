@@ -24,7 +24,7 @@ import ru.olegcherednik.spring.cloud.aws.sns.converters.PayloadConverter;
 public class AmazonSnsConfig {
 
     @Bean
-    @ConditionalOnMissingBean({ AWSCredentialsProvider.class, AmazonSNS.class })
+    @ConditionalOnMissingBean(AWSCredentialsProvider.class)
     public AWSCredentialsProvider awsCredentialsProvider() {
         return new DefaultAWSCredentialsProviderChain();
     }

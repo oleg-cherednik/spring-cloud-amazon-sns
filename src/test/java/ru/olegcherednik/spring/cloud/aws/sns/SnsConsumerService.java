@@ -15,7 +15,7 @@ import java.util.Map;
 @Service
 public class SnsConsumerService {
 
-    @AmazonSnsSubscription("letter")
+    @AmazonSnsSubscription("letterId")
     public void onLetterUpdate(MessageMetadata metadata, @Attributes Map<String, Object> attributes,
             @Subject String subject, @Message String payload) {
         System.out.println("---------- letter ----------");
@@ -28,7 +28,7 @@ public class SnsConsumerService {
         System.out.println("---------- -------------- ----------");
     }
 
-    @AmazonSnsSubscription("digit")
+    @AmazonSnsSubscription("digitId")
     public void onDigitUpdate(MessageMetadata metadata, @Attributes Map<String, Object> attributes,
             @Subject String subject, @Message String payload) {
         System.err.println(String.format("topic: 'digit', subject: '%s': %s", subject, payload));

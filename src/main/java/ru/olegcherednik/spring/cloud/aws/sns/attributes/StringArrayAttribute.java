@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import org.springframework.util.Assert;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public final class StringArrayAttribute extends Attribute {
         try {
             Assert.notNull(value, "'value' should not be null");
             return of(name, objectMapper.readValue(value, VALUE_TYPE_REF));
-        } catch(JsonProcessingException e) {
+        } catch(IOException e) {
             throw new RuntimeException(e);
         }
     }

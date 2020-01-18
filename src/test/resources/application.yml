@@ -1,6 +1,6 @@
 amazon:
   sns:
-    enable: true
+    enabled: true
     topics:
       letterId:
         arn: "arn:aws:sns:us-east-1:123456789012:letter"

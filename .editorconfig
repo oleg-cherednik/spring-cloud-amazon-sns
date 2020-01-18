@@ -1,3 +1,4 @@
+# https://editorconfig.org/
 [*]
 charset = utf-8
 end_of_line = lf
@@ -7,6 +8,9 @@ insert_final_newline = true
 max_line_length = 150
 tab_width = 4
 trim_trailing_whitespace = true
+
+[*.{yaml, yml}]
+indent_size = 2
 
 # noinspection EditorConfigKeyCorrectness
 continuation_indent_size = 8

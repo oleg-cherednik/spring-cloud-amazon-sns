@@ -1,3 +1,1 @@
-# spring-cloud-sns
-
-__
+# spring-cloud-aws-sns

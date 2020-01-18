@@ -6,7 +6,6 @@ import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.AmazonSNSClientBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -22,8 +21,7 @@ import ru.olegcherednik.spring.cloud.aws.sns.converters.PayloadConverter;
  * @author Oleg Cherednik
  * @since 12.01.2020
  */
-@Configuration
-@ConditionalOnBean(AmazonSnsProperties.class)
+@Configuration(proxyBeanMethods = false)
 public class SnsConfig {
 
     //    @Bean
@@ -31,7 +29,7 @@ public class SnsConfig {
         return new DefaultAWSCredentialsProviderChain();
     }
 
-    //    @Bean
+    @Bean
     public AmazonSNS sns(AWSCredentialsProvider awsCredentialsProvider) {
         return AmazonSNSClientBuilder.standard().withCredentials(awsCredentialsProvider).build();
     }

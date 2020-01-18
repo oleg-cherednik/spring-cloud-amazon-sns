@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import ru.olegcherednik.spring.cloud.aws.sns.attributes.MessageAttributes;
 
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -61,7 +62,7 @@ public class JsonPayloadConverter extends BasePayloadConverter {
             if (cls == String.class)
                 return (T)body;
             return objectMapper.readerFor(cls).readValue(body);
-        } catch(JsonProcessingException e) {
+        } catch(IOException e) {
             throw new RuntimeException(e);
         }
     }
