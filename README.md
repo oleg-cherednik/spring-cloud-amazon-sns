@@ -7,5 +7,5 @@
 * Minimal amount of dependencies
 * Flexible configuration
 * Property files support
-** enable/disable Amazon SNS support
-** change topic name not modifying the code
+  * enable/disable Amazon SNS support
+  * change topic name not modifying the code
