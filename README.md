@@ -1,6 +1,7 @@
 # spring-cloud-aws-sns
 
 
+
 ## Features
 * Send message with attributes and subject to the required topic
 * Receive message from different topic with subject and attributes
